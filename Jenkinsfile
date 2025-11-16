@@ -1,19 +1,34 @@
 pipeline {
     agent any
+    
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Building Docker Image...'
+                script {
+                    echo 'Building Docker image...'
+                    sh 'docker build -t flask-app:latest .'
+                    sh 'minikube image load flask-app:latest'
+                }
             }
         }
-        stage('Test') {
+        
+        stage('Deploy to Kubernetes') {
             steps {
-                echo 'Running Tests...'
+                script {
+                    echo 'Deploying to Kubernetes...'
+                    sh 'kubectl apply -f kubernetes/'
+                }
             }
         }
-        stage('Deploy') {
+        
+        stage('Verify Deployment') {
             steps {
-                echo 'Deploying to Kubernetes...'
+                script {
+                    echo 'Verifying deployment...'
+                    sh 'kubectl rollout status deployment/flask-app'
+                    sh 'kubectl get pods'
+                    sh 'kubectl get services'
+                }
             }
         }
     }
