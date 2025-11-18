@@ -94,5 +94,5 @@ kubectl rollout status deployment/flask-app
 
 ## Contributors
 
-- Admin: [Your Name]
-- Developer: [Partner Name]
+- Admin: Muhammad Zain Ali
+- Developer: Ibrahim Ansari
